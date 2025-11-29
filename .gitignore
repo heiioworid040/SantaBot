@@ -1,0 +1,24 @@
+# Json
+*.json
+
+# IntelliJ
+.idea/
+*.xml
+*.iws
+*.iml
+
+# Gradle
+.idea/gradle.xml
+.gradle
+build/
+
+# OS
+.DS_Store
+
+# Logs
+*.log
+
+# Gradle Wrapper
+!gradle/wrapper/gradle-wrapper.jar
+!gradlew
+!gradlew.bat

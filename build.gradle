@@ -1,0 +1,19 @@
+plugins {
+    id 'java'
+}
+
+group = 'SantaBot'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+    maven { url "https://jitpack.io" }
+}
+
+dependencies {
+    implementation 'net.dv8tion:JDA:5.0.0'
+    implementation 'dev.arbjerg:lavaplayer:2.0.4'
+    implementation 'org.slf4j:slf4j-api:2.0.9'
+    implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.4.11'
+    implementation("org.json:json:20240303")
+}
