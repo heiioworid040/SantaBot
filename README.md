@@ -1,7 +1,7 @@
 # SantaBot
 Discord Music Bot
 <br><br>
-![산타봇2](https://github.com/user-attachments/assets/ad0226f1-ad9d-4bb5-a9f8-69d0692baa71)
+![산타봇](https://github.com/user-attachments/assets/fc97692b-b4ad-494b-a718-0fc5aa722505)
 <br>
 산타봇이 캐롤 가방을 들고 왔어요 🎁
 <br>
