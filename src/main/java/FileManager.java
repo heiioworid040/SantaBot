@@ -10,7 +10,7 @@ import java.util.List;
 
 public class FileManager {
     private static final String CONFIG_FILE_PATH = "santabot_config.json";
-    private static final String CHANNEL_FILE_PATH = "santabot_channels.json";
+    private static final String CHANNEL_FILE_PATH = "santabot_channel.json";
     private JSONObject channelsData;
     public String getBotToken() {
         try {
@@ -53,44 +53,44 @@ public class FileManager {
     }
 
     public void addBotChannel(String serverId, String channelId) {
-        JSONObject serverObj = channelsData.optJSONObject("servers");
-        if (serverObj == null) serverObj = new JSONObject();
+        JSONObject guildObj = channelsData.optJSONObject("guild");
+        if (guildObj == null) guildObj = new JSONObject();
 
-        JSONObject server = serverObj.optJSONObject(serverId);
-        if (server == null) server = new JSONObject();
+        JSONObject guild = guildObj.optJSONObject(serverId);
+        if (guild == null) guild = new JSONObject();
 
-        JSONArray channels = server.optJSONArray("botChannels");
-        if (channels == null) channels = new JSONArray();
+        JSONArray channel = guild.optJSONArray("channel");
+        if (channel == null) channel = new JSONArray();
 
-        if (!channels.toList().contains(channelId)) {
-            channels.put(channelId);
+        if (!channel.toList().contains(channelId)) {
+            channel.put(channelId);
         }
 
-        server.put("botChannels", channels);
-        serverObj.put(serverId, server);
-        channelsData.put("servers", serverObj);
+        guild.put("channel", channel);
+        guildObj.put(serverId, guild);
+        channelsData.put("guild", guildObj);
 
         save();
     }
 
-    public List<String> getBotChannels(String serverId) {
-        JSONObject serverObj = channelsData.optJSONObject("servers");
+    public List<String> getBotChannels(String guildId) {
+        JSONObject serverObj = channelsData.optJSONObject("guild");
         if (serverObj == null) return new ArrayList<>();
 
-        JSONObject server = serverObj.optJSONObject(serverId);
-        if (server == null) return new ArrayList<>();
+        JSONObject guild = serverObj.optJSONObject(guildId);
+        if (guild == null) return new ArrayList<>();
 
-        JSONArray channels = server.optJSONArray("botChannels");
-        if (channels == null) return new ArrayList<>();
+        JSONArray channel = guild.optJSONArray("channel");
+        if (channel == null) return new ArrayList<>();
 
         List<String> list = new ArrayList<>();
-        for (int i = 0; i < channels.length(); i++) {
-            list.add(channels.getString(i));
+        for (int i = 0; i < channel.length(); i++) {
+            list.add(channel.getString(i));
         }
         return list;
     }
 
-    public boolean isBotChannel(String serverId, String channelId) {
-        return getBotChannels(serverId).contains(channelId);
+    public boolean isBotChannel(String guildId, String channelId) {
+        return getBotChannels(guildId).contains(channelId);
     }
 }

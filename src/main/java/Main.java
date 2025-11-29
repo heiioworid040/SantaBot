@@ -1,6 +1,6 @@
-import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.requests.GatewayIntent;
+import net.dv8tion.jda.api.utils.MemberCachePolicy;
 
 
 public class Main {
@@ -12,12 +12,17 @@ public class Main {
 
         if (botToken == null || botToken.isEmpty()) return;
 
-        JDABuilder.createLight(botToken,
+        JDABuilder.createDefault(botToken)
+                .enableIntents(
+                        GatewayIntent.GUILD_MEMBERS,
+                        GatewayIntent.GUILD_VOICE_STATES,
                         GatewayIntent.GUILD_MESSAGES,
-                        GatewayIntent.MESSAGE_CONTENT,
-                        GatewayIntent.GUILD_MEMBERS)
+                        GatewayIntent.MESSAGE_CONTENT
+                )
+                .setMemberCachePolicy(MemberCachePolicy.ALL)
                 .addEventListeners(new CommandHandler(fileManager))
                 .build();
+
 
         fileManager.loadChannels();
     }

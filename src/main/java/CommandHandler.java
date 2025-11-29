@@ -1,6 +1,5 @@
-import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.entities.channel.middleman.AudioChannel;
 import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -24,15 +23,16 @@ public class CommandHandler extends ListenerAdapter {
         Guild guild = event.getGuild();
         MessageChannel channel = event.getChannel();
         User user = event.getAuthor();
+        Member member = event.getMember();
 
-        System.out.println(event.getMessage());
+        System.out.println(msg);
 
         if(user.isBot()) return;
 
-        if(msg.getContentRaw().equals("hi")) {
-            msg.reply("ho ho ho").queue();
+        if(msg.getContentRaw().equals("!산타야")) {
+            msg.reply("🧑‍🎄 반말하지 마세요.").queue();
         }
-        else if(msg.getContentRaw().equals("산타봇 채널 설정")) {
+        else if(msg.getContentRaw().equals("!산타봇채널설정")) {
             fileManager.addBotChannel(guild.getId(), channel.getId());
 
             EmbedBuilder embed = new EmbedBuilder();
@@ -59,8 +59,23 @@ public class CommandHandler extends ListenerAdapter {
                         " \n ✨⏯️ – 재생 / 잠깐 멈춰요").queue();
             }
 
-            msg.reply("채널 설정 완료!").queue();
+            msg.reply("🎄 " + channel.getAsMention() + "를 산타봇 전용 채널로 설정했어요.").queue();
+        }
+        else
+        {
+            if (fileManager.isBotChannel(guild.getId(), channel.getId()))
+            {
+                GuildVoiceState voiceState = member.getVoiceState();
+
+                if (voiceState == null || !voiceState.inAudioChannel()) {
+                    channel.sendMessage("🧑‍🎄 음성 채널에 들어가주세요.").queue();
+
+                    return;
+                }
+
+                AudioChannel audioChannel = voiceState.getChannel();
+                guild.getAudioManager().openAudioConnection(audioChannel);
+            }
         }
     }
-
 }
